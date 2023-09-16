@@ -24,26 +24,15 @@ export default function Tasks() {
             const updatedTasks = [...tasks, task.trim()];
             setTasks(updatedTasks);
             setTask('');
-            storeData(updatedTasks);
+            asyncStoreData('active-tasks', updatedTasks);
         }
     };
 
-    const storeData = async (value) => {
+    const asyncStoreData = async (key: string, value: any) => {
         try {
             const jsonValue = JSON.stringify(value);
             console.log('storing', jsonValue);
-            await AsyncStorage.setItem('active-tasks', jsonValue);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-
-    // Add another async storage function for completed tasks
-    const storeCompletedData = async (value) => {
-        try {
-            const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem('completed-tasks', jsonValue);
+            await AsyncStorage.setItem(key, jsonValue);
         } catch (e) {
             console.error(e);
         }
@@ -52,10 +41,11 @@ export default function Tasks() {
 
     const handleTaskCompletion = (taskName: string) => {
         const updatedTasks = tasks.filter(task => task !== taskName);
+        const newCompletedTasks = [...checkedTasks, taskName];
         setTasks(updatedTasks);
-        setCheckedTasks(prev => [...prev, taskName]);
-        storeData(updatedTasks);
-        storeCompletedData(checkedTasks);
+        setCheckedTasks(newCompletedTasks);
+        asyncStoreData('active-tasks', updatedTasks);
+        asyncStoreData('completed-tasks', newCompletedTasks);
         addTask(taskName);
     };
 
