@@ -14,15 +14,19 @@ export default function Tasks() {
     const { addTask } = React.useContext(AppContext);
 
     const handleAddTask = () => {
-
         if (task.trim() !== '') {
+            // Check if task already exists
+            if (tasks.includes(task.trim())) {
+                alert("Task already exists!"); // warning popup
+                return;
+            }
+
             const updatedTasks = [...tasks, task.trim()];
             setTasks(updatedTasks);
             setTask('');
             storeData(updatedTasks);
         }
     };
-
 
     const storeData = async (value) => {
         try {
