@@ -24,7 +24,7 @@ export default function Tasks() {
         try {
             const jsonValue = JSON.stringify(value);
             console.log('storing',jsonValue);
-            await AsyncStorage.setItem('my-key', jsonValue);
+            await AsyncStorage.setItem('active-tasks', jsonValue);
         } catch (e) {
             // saving error
         }
@@ -32,7 +32,7 @@ export default function Tasks() {
 
     const getData = async () => {
         try {
-            const jsonValue = await AsyncStorage.getItem('my-key');
+            const jsonValue = await AsyncStorage.getItem('active-tasks');
             console.log('reading',jsonValue);
             return jsonValue != null ? JSON.parse(jsonValue) : null;
     
