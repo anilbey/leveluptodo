@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Checkbox from 'expo-checkbox';
+import { AppContext } from '../src/store/appContext';
+import { getData } from '../src/utils/getData';
 
 
 export default function Tasks() {
@@ -9,11 +11,13 @@ export default function Tasks() {
     const [tasks, setTasks] = useState<string[]>([]);
     const [checkedTasks, setCheckedTasks] = useState<string[]>([]);
 
+    const { addTask } = React.useContext(AppContext);
+
     const handleAddTask = () => {
-    
+
         if (task.trim() !== '') {
             const updatedTasks = [...tasks, task.trim()];
-            setTasks(updatedTasks   );
+            setTasks(updatedTasks);
             setTask('');
             storeData(updatedTasks);
         }
@@ -23,23 +27,13 @@ export default function Tasks() {
     const storeData = async (value) => {
         try {
             const jsonValue = JSON.stringify(value);
-            console.log('storing',jsonValue);
+            console.log('storing', jsonValue);
             await AsyncStorage.setItem('active-tasks', jsonValue);
         } catch (e) {
-            // saving error
+            console.error(e);
         }
     };
 
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('active-tasks');
-            console.log('reading',jsonValue);
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-    
-        } catch (e) {
-            // error reading value
-        }
-    };
 
     // Add another async storage function for completed tasks
     const storeCompletedData = async (value) => {
@@ -47,7 +41,7 @@ export default function Tasks() {
             const jsonValue = JSON.stringify(value);
             await AsyncStorage.setItem('completed-tasks', jsonValue);
         } catch (e) {
-            // saving error
+            console.error(e);
         }
     };
 
@@ -58,11 +52,12 @@ export default function Tasks() {
         setCheckedTasks(prev => [...prev, taskName]);
         storeData(updatedTasks);
         storeCompletedData(checkedTasks);
+        addTask(taskName);
     };
 
-    // once at the app launch
-    useEffect(() => {  
-        getData().then((data) => { data? setTasks(data):setTasks([])});
+    // once at the component mount
+    useEffect(() => {
+        getData('active-tasks').then((data) => { data ? setTasks(data) : setTasks([]) });
     }, [])
 
     return (
@@ -85,7 +80,7 @@ export default function Tasks() {
                         <Checkbox style={styles.checkbox} value={false} onValueChange={() => handleTaskCompletion(item)} />
                         <Text>{item}</Text>
                     </View>
-                )}                
+                )}
             />
         </>
     );
@@ -114,5 +109,5 @@ const styles = StyleSheet.create({
     checkbox: {
         marginRight: 10,  // space btw. checkbox and task text
     },
-    
+
 });
