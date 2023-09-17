@@ -14,7 +14,7 @@ export default function History() {
 
     return (
         <BackgroundComponent>
-            <View>
+            <View style={styles.container}>
                 <FlatList
                     data={tasksList}
                     renderItem={({ item }) => (
@@ -38,4 +38,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#eee',
         borderBottomWidth: 1,
     },
+    container: {
+        flex: 1,  // take whole available space
+    }    
 });

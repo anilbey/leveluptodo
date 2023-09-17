@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',  // Vertically align items to the middle
         padding: 10,
         borderBottomColor: '#eee',
-        borderBottomWidth: 5,
+        borderBottomWidth: 1,
     },
     checkbox: {
         marginRight: 10,  // space btw. checkbox and task text
