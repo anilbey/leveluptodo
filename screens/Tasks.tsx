@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Checkbox from 'expo-checkbox';
 import { AppContext } from '../src/store/appContext';
 import { getData } from '../src/utils/getData';
+import BackgroundComponent from '../src/components/BackgroundComponent';
 
 
 export default function Tasks() {
@@ -56,26 +57,28 @@ export default function Tasks() {
 
     return (
         <>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    value={task}
-                    onChangeText={setTask}
-                    placeholder="Enter a task"
-                />
-                <Button title="Add" onPress={handleAddTask} />
-            </View>
+            <BackgroundComponent>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value={task}
+                        onChangeText={setTask}
+                        placeholder="Enter a task"
+                    />
+                    <Button title="Add" onPress={handleAddTask} />
+                </View>
 
-            <FlatList
-                data={tasks}
-                keyExtractor={(item, index) => item.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.taskContainer}>
-                        <Checkbox style={styles.checkbox} value={false} onValueChange={() => handleTaskCompletion(item)} />
-                        <Text>{item}</Text>
-                    </View>
-                )}
-            />
+                <FlatList
+                    data={tasks}
+                    keyExtractor={(item, index) => item.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.taskContainer}>
+                            <Checkbox style={styles.checkbox} value={false} onValueChange={() => handleTaskCompletion(item)} />
+                            <Text>{item}</Text>
+                        </View>
+                    )}
+                />
+            </BackgroundComponent>
         </>
     );
 }

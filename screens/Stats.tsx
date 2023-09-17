@@ -1,16 +1,19 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { AppContext } from '../src/store/appContext';
+import BackgroundComponent from '../src/components/BackgroundComponent';
 
 export default function Stats() {
     const { tasksList } = React.useContext(AppContext);
     const completedTasksCount = tasksList.length;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Stats</Text>
-            <Text style={styles.info}>Total tasks ever completed: {completedTasksCount}</Text>
-        </View>
+        <BackgroundComponent>
+            <View style={styles.container}>
+                <Text style={styles.header}>Stats</Text>
+                <Text style={styles.info}>Total tasks ever completed: {completedTasksCount}</Text>
+            </View>
+        </BackgroundComponent>
     );
 }
 
