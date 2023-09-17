@@ -20,7 +20,7 @@ export default function App() {
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
 
-                if (route.name === 'Stats') {
+                if (route.name === 'Status') {
                   iconName = focused
                     ? 'ios-information-circle'
                     : 'ios-information-circle-outline';
@@ -40,7 +40,7 @@ export default function App() {
           >
 
             <Tab.Screen name="Tasks" component={Tasks} />
-            <Tab.Screen name="Stats" component={Stats} />
+            <Tab.Screen name="Status" component={Stats} />
             <Tab.Screen name="History" component={History} />
           </Tab.Navigator>
         </NavigationContainer>
