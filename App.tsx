@@ -7,10 +7,47 @@ import History from './screens/History';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppContextProvider } from './src/store/appContext';
 import { AsyncStorageSynchronizer } from './src/components/asyncStorageSynchronizer';
+import CharacterSetup from './screens/CharacterSetup';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SplashScreen from 'expo-splash-screen';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
+  const [hasCompletedSetup, setHasCompletedSetup] = useState<boolean | null>(null);
+  const navigationRef = React.useRef(null);
+
+  useEffect(() => {
+      // For debug: set the setup state to false
+      AsyncStorage.setItem('hasCompletedSetup', 'false');
+      const checkSetup = async () => {
+        // Prevent splash screen from auto-hiding
+          await SplashScreen.preventAutoHideAsync();
+
+          const value = await AsyncStorage.getItem('hasCompletedSetup');
+          setHasCompletedSetup(value === 'true');
+
+          // Hide the splash screen manually
+          await SplashScreen.hideAsync();
+      };
+
+      checkSetup();
+  }, []);
+
+  if (!hasCompletedSetup) {
+    return (
+        <CharacterSetup onComplete={async () => {
+            setHasCompletedSetup(true);
+            await AsyncStorage.setItem('hasCompletedSetup', 'true');
+            // Use the navigationRef to navigate
+            navigationRef.current?.navigate('Status');
+        }} />
+    );
+}
+
+  
   return (
     <AppContextProvider>
       <AsyncStorageSynchronizer>
