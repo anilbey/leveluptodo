@@ -20,8 +20,6 @@ export default function App() {
   const navigationRef = React.useRef(null);
 
   useEffect(() => {
-      // For debug: set the setup state to false
-      AsyncStorage.setItem('hasCompletedSetup', 'false');
       const checkSetup = async () => {
         // Prevent splash screen from auto-hiding
           await SplashScreen.preventAutoHideAsync();
