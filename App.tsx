@@ -38,11 +38,11 @@ export default function App() {
 
   if (!hasCompletedSetup) {
     return (
-        <CharacterSetup onComplete={async () => {
-            setHasCompletedSetup(true);
-            await AsyncStorage.setItem('hasCompletedSetup', 'true');
-            // Use the navigationRef to navigate
-            navigationRef.current?.navigate('Status');
+        <CharacterSetup onComplete={async ({ name, image }) => {
+          setHasCompletedSetup(true);
+          await AsyncStorage.setItem("hasCompletedSetup", "true");
+          // Use the navigationRef to navigate
+          navigationRef.current?.navigate("Status", { name, image });
         }} />
     );
 }
@@ -51,7 +51,7 @@ export default function App() {
   return (
     <AppContextProvider>
       <AsyncStorageSynchronizer>
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {

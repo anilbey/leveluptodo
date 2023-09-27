@@ -10,7 +10,7 @@ const kamImages = [
 ];
 
 type CharacterSetupProps = {
-    onComplete: () => void;
+    onComplete: ({ name, image }) => void;
 };
 
 export default function CharacterSetup({ onComplete }: CharacterSetupProps) {
@@ -20,8 +20,7 @@ export default function CharacterSetup({ onComplete }: CharacterSetupProps) {
 
     const handleSubmit = async () => {
         if (name && selectedImage) {
-            setCharacterData({ name, image: selectedImage });
-            onComplete();
+            onComplete({ name, image: selectedImage });
         }
     };
 

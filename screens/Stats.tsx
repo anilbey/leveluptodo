@@ -2,14 +2,37 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { AppContext } from '../src/store/appContext';
 import BackgroundComponent from '../src/components/BackgroundComponent';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { Image } from 'react-native';
+
+
+type RouteParams = {
+    Stats: {
+        name: string;
+        image: string;
+    };
+};
+type ScreenRouteProp = RouteProp<RouteParams, "Stats">;
+
 
 export default function Stats() {
     const { tasksList } = React.useContext(AppContext);
-    const completedTasksCount = tasksList.length;
+    const completedTasksCount = tasksList?.length || 0;
+
+    const route = useRoute<ScreenRouteProp>();
+    const { name, image } = route.params;
+
+    const kamImages = {
+        'kam1.png': require('../assets/kam1.png'),
+        'kam2.png': require('../assets/kam2.png'),
+        'kam3.png': require('../assets/kam3.png'),
+        'kam4.png': require('../assets/kam4.png'),
+    };
+
 
     // Mock data
     const character = {
-        name: "Gesar",
+        name: name,
         job: "Warrior",
         title: "Hero of the Realm",
         level: 11,
@@ -25,7 +48,9 @@ export default function Stats() {
 
     return (
         <BackgroundComponent>
+
             <View style={styles.infoContainer}>
+                <Image source={kamImages[image]} style={styles.characterImage} />
                 <Text style={styles.header}>Name: {character.name}</Text>
                 <Text style={styles.info}>Job: {character.job}</Text>
                 <Text style={styles.info}>Title: {character.title}</Text>
@@ -59,7 +84,7 @@ const styles = StyleSheet.create({
     },
     characterImage: {
         width: '40%',
-        height: '80%',
+        height: '20%',
         resizeMode: 'contain',
     },
     infoContainer: {
